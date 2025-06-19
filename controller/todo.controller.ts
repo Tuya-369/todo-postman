@@ -1,16 +1,18 @@
 import { nanoid } from "nanoid";
+import fs from "fs-extra";
 import { Todo } from "../type/types";
 import { Request, Response } from "express";
-
 let todos: Todo[] = [];
 
 export const getTodos = (req: Request, res: Response) => {
-  res.json({ todos });
+  const todos = fs.readFileSyns("./user.json", { encoding: "utf8", flag: "r" });
+  res.json(JSON.parse(todos));
 };
 
 export const addTodo = (req: Request, res: Response) => {
   const { desc } = req.body;
   const unqId = nanoid();
+
   const todo = {
     id: unqId,
     desc,
